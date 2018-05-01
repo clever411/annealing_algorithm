@@ -55,8 +55,8 @@ float Solution::energy() const {
 std::ostream& Solution::print(std::ostream &os) const {
 	for(int i = 0; i < _n; ++i) {
 		for(int j = 0; j < _code[i]; ++j)
-			os << ' ';
-		os << 'Q' << '\n';
+			os << "  ";
+		os << "Q " << '\n';
 	}
 	os << "energy: " << _energy << '\n';
 	os << "--------------------------";
