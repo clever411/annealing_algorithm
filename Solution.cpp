@@ -1,5 +1,7 @@
 #include <algorithm>
 #include <cmath>
+#include <exception>
+#include <iostream>
 #include "Solution.hpp"
 #include <string>
 #include <random>
@@ -26,8 +28,11 @@ Solution& Solution::operator=(Solution const &sol) {
 }
 
 Solution::Solution(int n): _n(n), _code(new int[n]), _energy(0) {
-	for(int i = 0; i < n; ++i) 
-		_code[i] = i;
+	if(n < 2)
+		throw invalid_argument("invalid n");
+	for(int i = 0; i < _n; ++i) {
+		_code[i] = rand()%_n;
+	}
 	_update();
 	return;
 }
@@ -36,14 +41,9 @@ Solution::~Solution() {
 }
 
 void Solution::tweak() {
-	int a, b;
-	do {
-		a = rand()%_n;
-		b = rand()%_n;
-	}
-	while(a == b);
-	
+	int a = rand()%_n, b = rand()%_n;
 	swap(_code[a], _code[b]);
+
 	_update();
 	
 	return;
@@ -54,24 +54,17 @@ float Solution::energy() const {
 
 std::ostream& Solution::print(std::ostream &os) const {
 	for(int i = 0; i < _n; ++i) {
-		for(int j = 0; j < _code[i]; ++j)
-			os << "  ";
-		os << "Q " << '\n';
+		os << _code[i] << " ";
 	}
-	os << "energy: " << _energy << '\n';
-	os << "--------------------------";
-	os << "\n\n" << flush;
+	os << endl << "energy: " << _energy << endl;
 	return os;
 }
 
 void Solution::_update() {
 	_energy = 0;
-	for(int x = 0; x < _n; ++x) {
-		for(int i = x+1; i < _n; ++i) {
-			if(abs(x-i) == abs(_code[x]-_code[i])) {
-				_energy += 1;
-			}
-		}
+	for(int i = 0; i < _n-1; ++i) {
+		if(_code[i] > _code[i+1])
+			_energy += _code[i]-_code[i+1];	
 	}
 	return;
 }

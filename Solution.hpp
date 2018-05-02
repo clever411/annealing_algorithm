@@ -5,7 +5,7 @@ public:
 	Solution(Solution const &sol);
 	Solution& operator=(Solution const &sol);
 	
-	Solution(int n = 8);
+	Solution(int n = 10);
 	~Solution();
 
 	void tweak();
